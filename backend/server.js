@@ -13,13 +13,11 @@ const { generateInterviewQuestions, generateConceptExplanation } = require("./co
 const app = express();
 
 // Middleware to handle CORS
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const cors = require('cors');
+app.use(cors({
+  origin: ['https://interview-prep-ecru.vercel.app/'], // Add your Vercel frontend URL here
+  credentials: true
+}));
 
 connectDB()
 
