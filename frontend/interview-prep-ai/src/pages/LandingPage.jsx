@@ -28,8 +28,8 @@ const LandingPage = () => {
 
   return (
     <>
-      <div className="w-full min-h-full bg-[#FFFCEF]">
-        <div className="w-[500px] h-[500px] bg-amber-200/20 blur-[65px] absolute top-0 left-0" />
+      <div className="w-full min-h-full bg-emerald-50">
+        <div className="w-[500px] h-[500px] bg-emerald-100/20 blur-[65px] absolute top-0 left-0" />
 
         <div className="container mx-auto px-4 pt-6 pb-[200px] relative z-10">
           {/* Header */}
@@ -53,7 +53,7 @@ const LandingPage = () => {
           <div className="flex flex-col md:flex-row items-center">
             <div className="w-full md:w-1/2 pr-4 mb-8 md:mb-0">
               <div className="flex items-center justify-left mb-2">
-                <div className="flex items-center gap-2 text-[13px] text-amber-600 font-semibold bg-amber-100 px-3 py-1 rounded-full border border-amber-300">
+                <div className="flex items-center gap-2 text-[13px] text-emerald-600 font-semibold bg-emerald-100 px-3 py-1 rounded-full border border-emerald-200">
                   <LuSparkles /> AI Powered
                 </div>
               </div>
@@ -97,7 +97,7 @@ const LandingPage = () => {
           </section>
         </div>
 
-        <div className="w-full min-h-full bg-[#FFFCEF] mt-10">
+        <div className="w-full min-h-full bg-emerald-50 mt-10">
           <div className="container mx-auto px-4 pt-10 pb-20">
             <section className="mt-5">
               <h2 className="text-2xl font-medium text-center mb-12">
@@ -110,7 +110,7 @@ const LandingPage = () => {
                   {APP_FEATURES.slice(0, 3).map((feature) => (
                     <div
                       key={feature.id}
-                      className="bg-[#FFFEF8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transition border border-amber-100"
+                      className="bg-emerald-50 p-6 rounded-xl shadow-xs hover:shadow-lg shadow-emerald-100 transition border border-emerald-100"
                     >
                       <h3 className="text-base font-semibold mb-3">
                         {feature.title}
@@ -125,7 +125,7 @@ const LandingPage = () => {
                   {APP_FEATURES.slice(3).map((feature) => (
                     <div
                       key={feature.id}
-                      className="bg-[#FFFEF8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transition border border-amber-100"
+                      className="bg-emerald-50 p-6 rounded-xl shadow-xs hover:shadow-lg shadow-emerald-100 transition border border-emerald-100"
                     >
                       <h3 className="text-base font-semibold mb-3">
                         {feature.title}
@@ -137,10 +137,6 @@ const LandingPage = () => {
               </div>
             </section>
           </div>
-        </div>
-
-        <div className="text-sm bg-gray-50 text-secondary text-center p-5 mt-5">
-          Made with ❤️... Happy Coding
         </div>
       </div>
 
