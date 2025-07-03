@@ -125,12 +125,19 @@ const generateQuestionsFromResume = async (req, res) => {
       contents: prompt,
     });
     let rawText = response.text;
-    const cleanedText = rawText
-      .replace(/^```json\\s*/, "")
-      .replace(/```$/, "")
-      .trim();
-    const data = JSON.parse(cleanedText);
-    res.status(200).json(data);
+    // Remove all code block markers (```json, ```) from anywhere in the string
+    let cleanedText = rawText.replace(/```json|```/gi, "").trim();
+    try {
+      const data = JSON.parse(cleanedText);
+      res.status(200).json(data);
+    } catch (err) {
+      console.error('Failed to parse Gemini response:', cleanedText);
+      res.status(500).json({
+        message: "Gemini AI returned invalid JSON.",
+        error: err.message,
+        raw: cleanedText
+      });
+    }
   } catch (error) {
     console.error('Error in generateQuestionsFromResume:', error);
     res.status(500).json({
