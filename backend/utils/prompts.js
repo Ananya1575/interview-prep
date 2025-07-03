@@ -45,4 +45,31 @@ const conceptExplainPrompt = (question) => `
     Important: Do NOT add any extra text outside the JSON format. Only return valid JSON.
     `;
 
-module.exports = { questionAnswerPrompt, conceptExplainPrompt };
+const resumeBasedQuestionPrompt = (
+  resumeText,
+  experience,
+  jobTitle,
+  numberOfQuestions
+) => `
+    You are an AI trained to generate technical interview questions and answers based on a candidate's resume or job description.
+    
+    Task:
+    - Resume/Job Description Content: ${resumeText}
+    - Candidate Experience: ${experience} years
+    - Target Job Title: ${jobTitle}
+    - Write ${numberOfQuestions} interview questions relevant to the candidate's background and the job title.
+    - For each question, generate a detailed but beginner-friendly answer.
+    - If the answer needs a code example, add a small code block inside.
+    - Keep formatting very clean.
+    - Return a pure JSON array like:
+    [
+      {
+        "question": "Question here?",
+        "answer": "Answer here."
+      },
+      ...
+    ]
+    Important: Do NOT add any extra text. Only return valid JSON.
+    `;
+
+module.exports = { questionAnswerPrompt, conceptExplainPrompt, resumeBasedQuestionPrompt };

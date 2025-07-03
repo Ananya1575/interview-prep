@@ -2,7 +2,12 @@ const { GoogleGenAI } = require("@google/genai");
 const {
   conceptExplainPrompt,
   questionAnswerPrompt,
+  resumeBasedQuestionPrompt,
 } = require("../utils/prompts");
+const pdfParse = require("pdf-parse");
+const mammoth = require("mammoth");
+const fs = require("fs");
+const path = require("path");
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -87,4 +92,54 @@ const generateConceptExplanation = async (req, res) => {
   }
 };
 
-module.exports = { generateInterviewQuestions, generateConceptExplanation };
+// @desc    Generate interview questions from resume/job description using Gemini
+// @route   POST /api/ai/generate-questions-from-resume
+// @access  Private
+const generateQuestionsFromResume = async (req, res) => {
+  try {
+    const { experience, jobTitle } = req.body;
+    const numberOfQuestions = 10;
+    if (!req.file || !experience || !jobTitle) {
+      return res.status(400).json({ message: "Missing required fields or file" });
+    }
+    const filePath = req.file.path;
+    const ext = path.extname(filePath).toLowerCase();
+    let resumeText = "";
+    if (ext === ".pdf") {
+      const dataBuffer = fs.readFileSync(filePath);
+      const pdfData = await pdfParse(dataBuffer);
+      resumeText = pdfData.text;
+    } else if (ext === ".docx" || ext === ".doc") {
+      const dataBuffer = fs.readFileSync(filePath);
+      const result = await mammoth.extractRawText({ buffer: dataBuffer });
+      resumeText = result.value;
+    } else if (ext === ".txt") {
+      resumeText = fs.readFileSync(filePath, "utf-8");
+    } else {
+      return res.status(400).json({ message: "Unsupported file type" });
+    }
+    // Optionally, delete the file after processing
+    fs.unlink(filePath, () => {});
+    // Limit resumeText length for prompt safety
+    resumeText = resumeText.slice(0, 3000);
+    const prompt = resumeBasedQuestionPrompt(resumeText, experience, jobTitle, numberOfQuestions);
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-lite",
+      contents: prompt,
+    });
+    let rawText = response.text;
+    const cleanedText = rawText
+      .replace(/^```json\s*/, "")
+      .replace(/```$/, "")
+      .trim();
+    const data = JSON.parse(cleanedText);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to generate questions from resume",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { generateInterviewQuestions, generateConceptExplanation, generateQuestionsFromResume };
