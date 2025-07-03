@@ -102,24 +102,21 @@ const generateQuestionsFromResume = async (req, res) => {
     if (!req.file || !experience || !jobTitle) {
       return res.status(400).json({ message: "Missing required fields or file" });
     }
-    const filePath = req.file.path;
-    const ext = path.extname(filePath).toLowerCase();
+    const ext = (req.file.originalname || '').split('.').pop().toLowerCase();
     let resumeText = "";
-    if (ext === ".pdf") {
-      const dataBuffer = fs.readFileSync(filePath);
-      const pdfData = await pdfParse(dataBuffer);
+
+    if (ext === "pdf") {
+      const pdfData = await pdfParse(req.file.buffer);
       resumeText = pdfData.text;
-    } else if (ext === ".docx" || ext === ".doc") {
-      const dataBuffer = fs.readFileSync(filePath);
-      const result = await mammoth.extractRawText({ buffer: dataBuffer });
+    } else if (ext === "docx" || ext === "doc") {
+      const result = await mammoth.extractRawText({ buffer: req.file.buffer });
       resumeText = result.value;
-    } else if (ext === ".txt") {
-      resumeText = fs.readFileSync(filePath, "utf-8");
+    } else if (ext === "txt") {
+      resumeText = req.file.buffer.toString("utf-8");
     } else {
       return res.status(400).json({ message: "Unsupported file type" });
     }
-    // Optionally, delete the file after processing
-    fs.unlink(filePath, () => {});
+
     // Limit resumeText length for prompt safety
     resumeText = resumeText.slice(0, 3000);
     const prompt = resumeBasedQuestionPrompt(resumeText, experience, jobTitle, numberOfQuestions);
@@ -129,15 +126,17 @@ const generateQuestionsFromResume = async (req, res) => {
     });
     let rawText = response.text;
     const cleanedText = rawText
-      .replace(/^```json\s*/, "")
+      .replace(/^```json\\s*/, "")
       .replace(/```$/, "")
       .trim();
     const data = JSON.parse(cleanedText);
     res.status(200).json(data);
   } catch (error) {
+    console.error('Error in generateQuestionsFromResume:', error);
     res.status(500).json({
       message: "Failed to generate questions from resume",
       error: error.message,
+      stack: error.stack,
     });
   }
 };

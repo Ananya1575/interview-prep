@@ -41,7 +41,7 @@ const LandingPage = () => {
               <ProfileInfoCard />
             ) : (
               <button
-                className="bg-linear-to-r from-[#FF9324] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"
+                className="bg-gradient-to-r from-emerald-500 to-emerald-400 text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"
                 onClick={() => setOpenAuthModal(true)}
               >
                 Login / Sign Up
@@ -60,7 +60,7 @@ const LandingPage = () => {
 
               <h1 className="text-5xl text-black font-medium mb-6 leading-tight">
                 Ace Interviews with <br />
-                <span className="text-transparent bg-clip-text bg-[radial-gradient(circle,_#FF9324_0%,_#FCD760_100%)] bg-[length:200%_200%] animate-text-shine font-semibold">
+                <span className="text-transparent bg-clip-text bg-[radial-gradient(circle,_#22c55e_0%,_#bbf7d0_100%)] bg-[length:200%_200%] animate-text-shine font-semibold">
                   AI-Powered
                 </span>{" "}
                 Learning

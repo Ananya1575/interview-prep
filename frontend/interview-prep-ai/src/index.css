@@ -4,7 +4,7 @@
 @theme {
   --font-display: "Urbanist", sans-serif;
   --breakpoint-3xl: 1920px;
-  --color-primary: #FF9324;
+  --color-primary: #22c55e; /* emerald-500 */
 }
 
 @layer base {
@@ -79,13 +79,13 @@
 }
 
 .input-box {
-  @apply w-full flex justify-between gap-3 text-sm text-black bg-gray-50/50 rounded px-4 py-3 mb-4 mt-3 border border-gray-100 outline-none focus-within:border-orange-300;
+  @apply w-full flex justify-between gap-3 text-sm text-black bg-gray-50/50 rounded px-4 py-3 mb-4 mt-3 border border-gray-100 outline-none focus-within:border-emerald-300;
 }
 
 .btn-primary {
-  @apply w-full flex items-center justify-center gap-3 text-sm font-medium text-white bg-black shadow-lg shadow-orange-600/5 p-[10px] rounded-md my-1 hover:bg-orange-600/15 hover:text-black cursor-pointer;
+  @apply w-full flex items-center justify-center gap-3 text-sm font-medium text-white bg-emerald-600 shadow-lg shadow-emerald-600/5 p-[10px] rounded-md my-1 hover:bg-emerald-700 hover:text-white cursor-pointer;
 }
 
 .btn-small {
-  @apply flex items-center justify-center gap-3 bg-linear-to-r from-[#FF9324] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2 rounded-lg hover:bg-black hover:text-white transition-colors cursor-pointer hover:shadow-2xl hover:shadow-orange-300
+  @apply flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-500 to-emerald-400 text-sm font-semibold text-white px-7 py-2 rounded-lg hover:bg-emerald-700 hover:text-white transition-colors cursor-pointer hover:shadow-2xl hover:shadow-emerald-300;
 }
